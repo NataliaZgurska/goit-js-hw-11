@@ -7,71 +7,26 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <div class="main-container">
-      <div class="block">
-        <form class="form-search">
-          <input type="text" name="text" class="form-input" />
+    <div class="block">
+      <form class="form-search">
+        <input
+          type="text"
+          name="text"
+          class="form-input"
+          placeholder="Search images"
+        />
 
-          <button type="submit" class="form-btn">Search</button>
-        </form>
-      </div>
-
-      <div class="gallery">
-        <!-- <a
-          class="gallery-link"
-          href="https://pixabay.com/get/g3983f1227a57df1407e76c897084eac70755beaa86feb02ff96c17c67c4ecd2a00d3689ec9364681d992c89822f00e7f08000c23d0cae732e773efd16cc1f014_1280.jpg"
-        >
-          <figure>
-            <img
-              src="https://pixabay.com/get/g00088c2666b501e9bda2be3f568d42d1f8be6e89a1596be1881babb0ffdaf7d837edb5c8d1804d5f29a968b3d9f85e1362bcf5a409c5b791f6698ff6452016d7_640.jpg"
-              alt="1"
-              class="gallery-image"
-            />
-            <figcaption class="gallery-figcaption">
-              <div class="image-item">
-                Likes <span class="image-elem">1000</span>
-              </div>
-              <div class="image-item">
-                Views <span class="image-elem">20000</span>
-              </div>
-              <div class="image-item">
-                Comments <span class="image-elem">500</span>
-              </div>
-              <div class="image-item">
-                Downloads <span class="image-elem">800</span>
-              </div>
-            </figcaption>
-          </figure>
-        </a>
-
-        <a
-          class="gallery-link"
-          href="https://pixabay.com/get/g4544203c216bb239dc808a6e6a2c248e84452b0605eae1e6928c11c3d5d500075347070f8e963e7d249eb89bc7de12135107bd54765b27a4b5557a1034a8f1c1_1280.jpg"
-        >
-          <figure>
-            <img
-              src="https://pixabay.com/get/g290064903e3f8cbf998d1b21e75be2e9edac63a8ec8f410b175810f0b64af9637f058118b18e4a3e29932bdc57c5f371462adc859c7b13becc8b1f47509e6b97_640.jpg"
-              alt="2"
-              class="gallery-image"
-            />
-            <figcaption class="gallery-figcaption">
-              <div class="image-item">
-                Likes <span class="image-elem">2000</span>
-              </div>
-              <div class="image-item">
-                Views <span class="image-elem">3000</span>
-              </div>
-              <div class="image-item">
-                Comments <span class="image-elem">700</span>
-              </div>
-              <div class="image-item">
-                Downloads <span class="image-elem">1500</span>
-              </div>
-            </figcaption>
-          </figure>
-        </a> -->
-      </div>
+        <button type="submit" class="form-btn">Search</button>
+      </form>
     </div>
+
+    <div class="loader-container">
+      <p>Loading images, please wait</p>
+      <span class="loader"></span>
+    </div>
+
+    <div class="gallery"></div>
+
     <script type="module" src="./js/task-1.js"></script>
   </body>
 </html>

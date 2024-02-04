@@ -1,33 +1,55 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
 
 const formEl = document.querySelector('.form-search');
 const imgContainer = document.querySelector('.gallery');
+const loaderContainer = document.querySelector('.loader-container');
+
+// Ховаємо лоадер
+loaderContainer.style.display = 'none';
 
 formEl.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
      e.preventDefault();
     const query = e.target.elements.text.value;
-    console.log(query);
-    
-    if (query === '') { return };
+        
+    if (query === '') {
+        return
+    };
+    // Очищуємо контейнер, показуємо лоадер
     imgContainer.innerHTML = '';
-   
-    // getPictures(query).then(data => {console.log(data)});
-    getPictures(query).then(data => {renderPictures(data)}); 
-   
-    e.target.reset();
+    loaderContainer.style.display = 'flex';
+
+    // Створюємо галерею
+    getPictures(query)
+        .then(function ({ hits}) {
+                if (hits.length>0) {
+                    const markup = hits.map(imgTemplate).join('');
+                    imgContainer.innerHTML = markup;
+
+                    // модульне вікно з бібліотеки   
+                    let gallery = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData: 'alt', showCounter: false });
+                    gallery.refresh();
+                } else {
+                    errorShow();
+                }
+        })
+        .catch(function (error) { 
+            errorShow(); 
+        })
+        .finally(function () {
+        // очищуємо форму, ховаємо лоадер
+        formEl.reset();
+        loaderContainer.style.display = 'none';
+    })
 }
 
-// key — твій унікальний ключ доступу до API.
-// q — слово для пошуку. Те, що буде вводити користувач.
-// image_type — тип зображення. Потрібні тільки фотографії, тому постав значення photo.
-// orientation — орієнтація фотографії. Постав значення horizontal.
-//     safesearch — фільтр за віком.Постав значення true.
-
-
+// Запит на сервер pixabay для отримання картинок
 function getPictures(searchText) {
     const BASE_URL = 'https://pixabay.com/api';
     const API_KEY = '/?key=42190673-143cbde4cd6a94de75e31d0a4';
@@ -40,24 +62,7 @@ function getPictures(searchText) {
     return fetch(url).then(res => res.json());
 }
 
-function renderPictures(param) {
-    const markup = param.hits.map(imgTemplate).join('');
-    imgContainer.innerHTML = markup;
-    // const lightbox = new SimpleLightbox('gallery-link');
-    let gallery = new SimpleLightbox('.gallery a');
-};
-
-
-// webformatURL — посилання на маленьке зображення для списку карток у галереї
-// largeImageURL — посилання на велике зображення для модального вікна
-// tags — рядок з описом зображення. Підійде для атрибута alt
-// likes — кількість вподобайок
-// views — кількість переглядів
-// comments — кількість коментарів
-// downloads — кількість завантажень
-
-
-
+// Формуємо посилання на картинку з інформацією про неї
 function imgTemplate({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) {
   return ` 
   <a href="${largeImageURL}" class="gallery-link">
@@ -73,5 +78,18 @@ function imgTemplate({webformatURL, largeImageURL, tags, likes, views, comments,
 </a >`
     }
 
-// let gallery = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData: 'alt', showCounter: false });
-//  let gallery = new SimpleLightbox('.gallery a');
+// спливаюче вікно про помилку бібліотеки iziToast
+function errorShow() {
+              iziToast.show({
+                    close: true,
+                    message: 'Sorry, there are no images matching your search query. Please try again!',
+                  messageColor: '#FFFFFF',
+                    messageSize: '10px',
+                    backgroundColor: '#B51B1B',
+                    position: 'topLeft',
+                    close: true,
+                  timeout: 10000,
+                  progressBarColor: '#FFFFFF',
+                  maxWidth: '380px',
+                    });
+}
