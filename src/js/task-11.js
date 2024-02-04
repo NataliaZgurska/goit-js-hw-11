@@ -15,8 +15,8 @@ function onFormSubmit(e) {
     if (query === '') { return };
     imgContainer.innerHTML = '';
    
-    // getPictures(query).then(data => {console.log(data)});
-    getPictures(query).then(data => {renderPictures(data)}); 
+    getPictures(query).then(data => {console.log(data)});
+    // getPictures(query).then(data => {renderPictures(data)}); 
    
     e.target.reset();
 }
@@ -43,8 +43,6 @@ function getPictures(searchText) {
 function renderPictures(param) {
     const markup = param.hits.map(imgTemplate).join('');
     imgContainer.innerHTML = markup;
-    // const lightbox = new SimpleLightbox('gallery-link');
-    let gallery = new SimpleLightbox('.gallery a');
 };
 
 
@@ -56,22 +54,14 @@ function renderPictures(param) {
 // comments — кількість коментарів
 // downloads — кількість завантажень
 
+function imgTemplate (obj) {
+  return ` <li class="gallery-item">
+  <a class="gallery-link" href="${obj.largeImageURL}">
+  <img class="gallery-image" src="${obj.webformatURL}" alt="${obj.tags}"/>
+  </a></li>` 
+}
 
 
-function imgTemplate({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) {
-  return ` 
-  <a href="${largeImageURL}" class="gallery-link">
-     <figure>
-      <img src="${webformatURL}" alt="${tags}" class="gallery-image">
-      <figcaption class="gallery-figcaption">
-        <div class="image-item">Likes <span class="image-elem">${likes}</span></div>
-        <div class="image-item">Views <span class="image-elem">${views}</span></div>
-        <div class="image-item">Comments <span class="image-elem">${comments}</span></div>
-        <div class="image-item">Downloads <span class="image-elem">${downloads}</span></div>
-  </figcaption>
-  </figure>
-</a >`
-    }
 
 // let gallery = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData: 'alt', showCounter: false });
-//  let gallery = new SimpleLightbox('.gallery a');
+ let gallery = new SimpleLightbox('.gallery a');
