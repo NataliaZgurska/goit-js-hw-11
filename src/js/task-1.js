@@ -11,8 +11,13 @@ function onFormSubmit(e) {
      e.preventDefault();
     const query = e.target.elements.text.value;
     console.log(query);
-    getPictures(query).then(data => {renderPictures(data)});
-      
+    
+    if (query === '') { return };
+    imgContainer.innerHTML = '';
+   
+    // getPictures(query).then(data => {console.log(data)});
+    getPictures(query).then(data => {renderPictures(data)}); 
+   
     e.target.reset();
 }
 
@@ -35,15 +40,11 @@ function getPictures(searchText) {
     return fetch(url).then(res => res.json());
 }
 
-// imgContainer.innerHTML = images.map(imgTemplate).join('');
-
-// let gallery = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData:'alt', showCounter: false});
-
-
 function renderPictures(param) {
     const markup = param.hits.map(imgTemplate).join('');
     imgContainer.innerHTML = markup;
 };
+
 
 // webformatURL — посилання на маленьке зображення для списку карток у галереї
 // largeImageURL — посилання на велике зображення для модального вікна
@@ -59,3 +60,5 @@ function imgTemplate (obj) {
   <img class="gallery-image" src="${obj.webformatURL}" alt="${obj.tags}"/>
   </a></li>` 
 }
+// let gallery = new SimpleLightbox('.gallery a', { captionDelay: 250, captionsData: 'alt', showCounter: false });
+ let gallery = new SimpleLightbox('.gallery a');
